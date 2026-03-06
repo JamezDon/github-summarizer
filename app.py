@@ -20,16 +20,10 @@ load_dotenv()
 app = FastAPI(title="GitHub Repository Summarizer")
 logger = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
-# Configuration
-# ---------------------------------------------------------------------------
-
+#Config
 NEBIUS_API_KEY = os.environ.get("NEBIUS_API_KEY", "")
 MAX_CONTENT_CHARS = 60_000
 
-# ---------------------------------------------------------------------------
-# Request / Response models
-# ---------------------------------------------------------------------------
 
 class SummarizeRequest(BaseModel):
     github_url: str
@@ -43,7 +37,7 @@ class SummarizeRequest(BaseModel):
             raise ValueError("Invalid GitHub repository URL")
         return v
 
-
+#Request/response models
 class SummarizeResponse(BaseModel):
     summary: str
     technologies: list[str]
@@ -55,10 +49,7 @@ class ErrorResponse(BaseModel):
     message: str
 
 
-# ---------------------------------------------------------------------------
 # GitHub helpers
-# ---------------------------------------------------------------------------
-
 SKIP_DIRS = {
     "node_modules", ".git", "__pycache__", ".tox", ".mypy_cache",
     ".pytest_cache", "venv", "env", ".venv", ".env", "dist", "build",
@@ -219,10 +210,7 @@ async def gather_repo_content(owner: str, repo: str) -> tuple[str, str]:
         return dir_tree, "".join(file_contents_parts)
 
 
-# ---------------------------------------------------------------------------
-# LLM
-# ---------------------------------------------------------------------------
-
+# LLM Analysis
 SYSTEM_PROMPT = """You are a senior software engineer analyzing a GitHub repository.
 Given the repository's directory tree and key file contents, produce a structured analysis.
 
@@ -293,10 +281,7 @@ def parse_llm_response(raw: str) -> dict:
     }
 
 
-# ---------------------------------------------------------------------------
 # Endpoint
-# ---------------------------------------------------------------------------
-
 @app.post("/summarize", response_model=SummarizeResponse)
 async def summarize(request: SummarizeRequest):
     try:

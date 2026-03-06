@@ -6,9 +6,7 @@ A FastAPI service that takes a GitHub repository URL and returns a human-readabl
 
 1. Unzip and enter the project directory
 
-2. Create and activate a virtual environment:
-   - On Linux/Mac: `python3 -m venv venv` then `source venv/bin/activate`
-   - On Windows: `python -m venv venv` then `venv\Scripts\activate`
+2. Create and activate a virtual environment: `python3 -m venv .venv` then `source .venv/bin/activate`
 
 3. Install dependencies: `pip install -r requirements.txt`
 
@@ -29,7 +27,9 @@ Send a POST request to `http://localhost:8000/summarize` with a JSON body:
 
 ## Model Choice
 
-**meta-llama/Llama-3.3-70B-Instruct** via Nebius Token Factory — a strong open-source model with good instruction-following for structured JSON output, available at low cost.
+I went with **meta-llama/Llama-3.3-70B-Instruct** on Nebius Token Factory. It's the biggest Llama model available there and handles code well. The main reason I picked it is that it reliably outputs valid JSON when asked, which is important since the API needs structured responses. It's also cheap to run on Nebius.
+
+I considered using OpenAI's GPT-4o or Anthropic's Claude, which would probably give slightly better summaries, but they're significantly more expensive per token. Since the Llama 3.3 70B model is more than capable for this task, it didn't seem worth the extra cost. I also looked at smaller models like Llama 8B on Nebius, but found the 70B version was noticeably better at following the JSON schema consistently and producing more detailed summaries.
 
 ## Approach to Repository Content Handling
 
