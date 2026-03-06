@@ -25,6 +25,18 @@ Send a POST request to `http://localhost:8000/summarize` with a JSON body:
 {"github_url": "https://github.com/psf/requests"}
 ```
 
+Example using curl:
+```
+curl -X POST http://localhost:8000/summarize   -H "Content-Type: application/json"   -d '{"github_url": "https://github.com/microsoft/mcp-for-beginners"}'
+```
+
+Example response:
+```json
+{"summary":"The microsoft/mcp-for-beginners GitHub repository provides a comprehensive guide for beginners to learn about Microsoft's Cloud Partner Program (MCP) and its related technologies. It includes tutorials, examples, and exercises in various programming languages such as Python, TypeScript, Java, and C#. The repository covers topics like security, deployment, and advanced concepts, making it a valuable resource for developers and IT professionals looking to enhance their skills in cloud computing and MCP.",
+"technologies":["Python","TypeScript","Java","C#","Azure","MCP","Cloud Computing","Docker","Rust","dotnet"],
+"structure":"The repository is organized into several sections, including introductions to MCP, core concepts, security, and getting started guides for various programming languages. It also includes advanced topics, deployment strategies, and testing techniques, with each section containing detailed tutorials, code examples, and exercises to help learners practice and reinforce their understanding of the subject matter."}
+```
+
 ## Model Choice
 
 I went with **meta-llama/Llama-3.3-70B-Instruct** on Nebius Token Factory. It's the biggest Llama model available there and handles code well. The main reason I picked it is that it reliably outputs valid JSON when asked, which is important since the API needs structured responses. It's also cheap to run on Nebius.
