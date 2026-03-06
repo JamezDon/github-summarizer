@@ -21,9 +21,6 @@ A FastAPI service that takes a GitHub repository URL and returns a human-readabl
 ## Test
 
 Send a POST request to `http://localhost:8000/summarize` with a JSON body:
-```json
-{"github_url": "https://github.com/psf/requests"}
-```
 
 Example using curl:
 ```
